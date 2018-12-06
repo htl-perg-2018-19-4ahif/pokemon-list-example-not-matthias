@@ -4,7 +4,7 @@
   "description": "Pokemon Index",
   "main": "src/app.ts",
   "scripts": {
-    "build": "tsc --watch public/ts/main.ts --outDir public/js",
+    "build": "tsc --watch public/ts/main.ts",
     "start": "ts-node src/app.ts"
   },
   "author": "not-matthias",
