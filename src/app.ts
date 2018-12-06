@@ -1,7 +1,15 @@
 import express from 'express';
 
+
+//
+// Constants
+//
 const port = 80;
 
+
+//
+// Express setup
+//
 const server = express();
 server.use(express.static("public"));
 
