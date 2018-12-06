@@ -1,27 +1,22 @@
 {
   "name": "pokemon-list-example-not-matthias",
   "version": "1.0.0",
-  "description": "In this exercise, you have to implement a website that uses a RESTful Web API in the background. You have to create the website from scratch without any initial templates to build on. Feel free to use prior homeworks or samples from the course material as a starting point.",
-  "main": "index.js",
+  "description": "Pokemon Index",
+  "main": "src/app.ts",
   "scripts": {
-    "start": "concurrently \"npm:api\" \"npm:web\"",
-    "api": "ts-node src/app.ts",
-    "web": "",
-    "watch": "nodemon --exec ts-node -- ./src/app.ts"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/htl-perg-2018-19-4ahif/pokemon-list-example-not-matthias.git"
+    "build": "tsc --watch public/ts/main.ts --outDir public/js",
+    "start": "ts-node src/app.ts"
   },
   "author": "not-matthias",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/htl-perg-2018-19-4ahif/pokemon-list-example-not-matthias/issues"
-  },
-  "homepage": "https://github.com/htl-perg-2018-19-4ahif/pokemon-list-example-not-matthias#readme",
   "devDependencies": {
-    "typescript": "^3.2.1",
-    "concurrently": "^4.1.0"
+    "@types/express": "^4.16.0",
+    "@types/node-fetch": "^2.1.4",
+    "concurrently": "^4.1.0",
+    "typescript": "^3.2.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "express": "^4.16.4",
+    "node-fetch": "^2.3.0"
+  }
 }
