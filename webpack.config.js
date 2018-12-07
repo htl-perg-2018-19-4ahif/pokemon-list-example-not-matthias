@@ -15,6 +15,11 @@ module.exports = {
         test: /\.(css|sass|scss)$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
         exclude: /node_modules/
+      },
+      {
+        test: /\.otf$/,
+        loader: "file-loader",
+        exclude: /node_modules/
       }
     ]
   },
