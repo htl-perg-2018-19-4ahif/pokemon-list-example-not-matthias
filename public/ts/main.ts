@@ -1,11 +1,5 @@
 import '../css/styles.css';
 
-//
-// Constants
-//
-const url = "https://pokeapi.co/api/v2/pokemon/";
-
-
-//
-// Requests
-//
+import axios from 'axios';
+import jquery from 'jquery';
+import 'bootstrap'

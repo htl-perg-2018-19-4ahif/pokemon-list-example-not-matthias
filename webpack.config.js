@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: './public/ts/main.ts',
@@ -18,7 +19,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js', ".css", ".otf"]
+    extensions: ['.tsx', '.ts', '.js']
   },
   output: {
     filename: 'bundle.js',
