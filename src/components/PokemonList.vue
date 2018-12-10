@@ -88,6 +88,7 @@ import { Button } from "bootstrap-vue";
 
 const api = new PokemonAPI();
 
+// @ts-ignore
 @Component
 export default class PokemonList extends Vue {
   fields: any = [
