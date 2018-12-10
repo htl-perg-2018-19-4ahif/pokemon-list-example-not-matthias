@@ -12,7 +12,6 @@
     <!-- Table -->
     <b-container>
       <b-table
-        show-empty
         stacked="md"
         :items="items"
         :fields="fields"
@@ -26,7 +25,7 @@
       >
         <template slot="name" slot-scope="row">{{row.value}}</template>
         <template slot="details" slot-scope="row">
-          <b-button size="sm" @click.stop="info(row.item, row.index, $event.target)">Details</b-button>
+          <b-button size="sm" @click.stop="openModal(row.item, row.index, $event.target)">Details</b-button>
         </template>
       </b-table>
 
@@ -39,8 +38,37 @@
       />
 
       <!-- Info modal -->
-      <b-modal id="modalInfo" @hide="resetModal" :title="modalInfo.title" ok-only>
-        <pre>{{ modalInfo.content }}</pre>
+      <b-modal id="modalInfo" @hide="resetModal" :title="modalInfo.name" ok-only>
+        <!-- Image -->
+        <b-img thumbnail center :src="modalInfo.image" alt="Image"/>
+
+        <hr>
+
+        <!-- Name -->
+        <b-btn v-b-toggle.name class="m-1 btn-block">Name</b-btn>
+
+        <b-collapse id="name">
+          <b-card>{{ modalInfo.name }}</b-card>
+        </b-collapse>
+
+        <!-- Weight -->
+        <b-btn v-b-toggle.weight class="m-1 btn-block">Weight</b-btn>
+
+        <b-collapse id="weight">
+          <b-card>{{ modalInfo.weight }}</b-card>
+        </b-collapse>
+
+        <hr>
+
+        <b-btn v-b-toggle.ablities class="m-1 btn-block">Abilities</b-btn>
+
+        <!-- Ability -->
+        <b-collapse id="ablities">
+          <b-card
+            v-for="(ability, key) in modalInfo.abilities"
+            :key="key"
+          >{{ `Name: ${ability.ability.name}` }}</b-card>
+        </b-collapse>
       </b-modal>
     </b-container>
   </div>
@@ -50,8 +78,13 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { PokemonAPI, IPokemonList, IPokemonListItem } from "./pokemon-api";
-import { Button } from 'bootstrap-vue';
+import {
+  PokemonAPI,
+  IPokemonList,
+  IPokemonListItem,
+  IPokemon
+} from "./pokemon-api";
+import { Button } from "bootstrap-vue";
 
 const api = new PokemonAPI();
 
@@ -79,36 +112,53 @@ export default class PokemonList extends Vue {
   sortDesc = false;
   sortDirection = "asc";
 
-  modalInfo = { title: "", content: "" };
+  modalInfo: IPokemon = {
+    name: "",
+    weight: 0,
+    image: "",
+    abilities: []
+  };
 
+  /**
+   * Initializes the list
+   */
   async mounted() {
     const response = await api.getPokemonList();
     this.items = response.list;
     this.totalRows = response.list.length;
   }
 
-  onSearch(event: any) {
-    console.log(event);
-  }
-
+  /**
+   * Filters a specific item
+   */
   onFiltered(filteredItems: IPokemonListItem[]) {
     this.totalRows = filteredItems.length;
     this.currentPage = 1;
   }
 
+  /**
+   * Resets the modal
+   */
   resetModal() {
-    this.modalInfo.title = "";
-    this.modalInfo.content = "";
+    this.modalInfo = {
+      name: "",
+      weight: 0,
+      image: "",
+      abilities: []
+    };
   }
 
-  info(item: IPokemonListItem, index: number, button: Button) {
-    this.modalInfo.title = `Row index: ${index}`;
-    this.modalInfo.content = JSON.stringify(item, null, 2);
+  /**
+   * Opens the modal
+   */
+  async openModal(item: IPokemonListItem, index: number, button: Button) {
+    const response = await api.getPokemonById(index + 1);
+    this.modalInfo = response;
+
     this.$root.$emit("bv::show::modal", "modalInfo", button);
   }
 }
 </script>
-
 
 <style>
 </style>
