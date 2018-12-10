@@ -6,6 +6,18 @@
 
 import axios from "axios";
 
+// types describing result from pokeapi (note: not exported)
+interface IPokemonListResult {
+    results: IPokemonListItem[];
+}
+
+interface IPokemonResult {
+    name: string;
+    weight: number;
+    abilities: IAbility[];
+    sprites: { front_default: string };
+}
+
 export interface IPokemonList {
     list: IPokemonListItem[];
 }
@@ -35,7 +47,8 @@ export class PokemonAPI {
     readonly url: string = 'https://pokeapi.co/api/v2/pokemon';
 
     public async getPokemonList(): Promise<IPokemonList> {
-        const response = await axios.get(`${this.url}/`);
+        // tip RS: Use typed version of axios.get to get type safety
+        const response = await axios.get<IPokemonListResult>(`${this.url}/`);
         return new Promise<IPokemonList>((resolve) =>
             resolve({
                 list: response.data.results
@@ -44,7 +57,8 @@ export class PokemonAPI {
     }
 
     public async getPokemonById(index: number): Promise<IPokemon> {
-        const response = await axios.get(`${this.url}/${index}/`);
+        // tip RS: Like above, use typed API
+        const response = await axios.get<IPokemonResult>(`${this.url}/${index}/`);
         const result = response.data;
 
         let pokemon: IPokemon = {
@@ -54,11 +68,14 @@ export class PokemonAPI {
             abilities: result.abilities
         };
 
-        return new Promise<IPokemon>((resolve) => resolve(pokemon));
+        // tip RS: Do not create a new Promise here. Because you already have "await" in
+        //         the function, you can just return the Pokemon
+        return pokemon;
     }
 
     public async getPokemonByName(name: string): Promise<IPokemon> {
-        const response = await axios.get(`${this.url}/${name}/`);
+        // Same as above
+        const response = await axios.get<IPokemonResult>(`${this.url}/${name}/`);
         const result = response.data;
 
         let pokemon = {
@@ -68,6 +85,7 @@ export class PokemonAPI {
             abilities: result.abilities
         };
 
-        return new Promise<IPokemon>((resolve) => resolve(pokemon));
+        // Same as above
+        return pokemon;
     }
 }
